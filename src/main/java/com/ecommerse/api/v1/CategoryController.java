@@ -1,6 +1,7 @@
 package com.ecommerse.api.v1;
 
-import com.ecommerse.entity.CategoryEntity;
+import com.ecommerse.model.CategoryCreateRequest;
+import com.ecommerse.model.CategoryResponse;
 import com.ecommerse.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +17,20 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Long create(@RequestBody CategoryEntity entity){
-       return categoryService.create(entity);
+    public Long create(@RequestBody CategoryCreateRequest request){
+       return categoryService.create(request);
     }
     @GetMapping
-    public List<CategoryEntity> findAll(){
+    public List<CategoryResponse> findAll(){
         return categoryService.findAll();
     }
     @GetMapping("/{id}")
-    public CategoryEntity findById(@PathVariable Long id){
+    public CategoryResponse findById(@PathVariable Long id){
         return categoryService.findById(id);
+    }
+    @PutMapping("/{id}")
+    public Long update(@PathVariable Long id, @RequestBody CategoryCreateRequest request){
+        return categoryService.update(id,request);
     }
 
 }
