@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthenticationTokenRepository extends JpaRepository<AuthenticationTokenEntity,Long> {
     AuthenticationTokenEntity findByUser(UserEntity user);
+    AuthenticationTokenEntity findByToken(String token);
 }

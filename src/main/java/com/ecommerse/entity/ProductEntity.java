@@ -1,6 +1,7 @@
 package com.ecommerse.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,7 @@ public class ProductEntity {
 
     @ManyToOne
     @JoinColumn(name="category_id")
+    @JsonIgnore
     private CategoryEntity category;
 
     public CategoryEntity getCategory() {

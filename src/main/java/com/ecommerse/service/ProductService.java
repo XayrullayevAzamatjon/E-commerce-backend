@@ -67,7 +67,7 @@ public class ProductService {
     }
 
 
-    private ProductDto toDto(ProductEntity entity) {
+    public ProductDto toDto(ProductEntity entity) {
         return new ProductDto(
                 entity.getId(),
                 entity.getName(),
