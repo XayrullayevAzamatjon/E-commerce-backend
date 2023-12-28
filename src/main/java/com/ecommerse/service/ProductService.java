@@ -3,6 +3,7 @@ package com.ecommerse.service;
 
 import com.ecommerse.entity.CategoryEntity;
 import com.ecommerse.entity.ProductEntity;
+import com.ecommerse.exceptions.ProductNotFoundException;
 import com.ecommerse.model.ProductDto;
 import com.ecommerse.repository.CategoryRepository;
 import com.ecommerse.repository.ProductRepository;
@@ -59,6 +60,20 @@ public class ProductService {
             } else {
                 LOGGER.warn("Product not found for id: {}", id);
                 return null;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error occurred while finding a product by id {}: {}", id, e.getMessage(), e);
+            throw new RuntimeException("Failed to find a product.", e);
+        }
+    }
+    public ProductEntity getById(Long id){
+        try {
+            Optional<ProductEntity> foundProduct = productRepository.findById(id);
+            if (foundProduct.isPresent()) {
+                return foundProduct.get();
+            } else {
+                LOGGER.warn("Product not found for id: {}", id);
+                throw new ProductNotFoundException("Product not found for id: ["+id+"]");
             }
         } catch (Exception e) {
             LOGGER.error("Error occurred while finding a product by id {}: {}", id, e.getMessage(), e);
