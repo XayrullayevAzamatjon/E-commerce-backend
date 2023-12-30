@@ -6,7 +6,6 @@ import com.ecommerse.model.SignInDto;
 import com.ecommerse.model.SignInResponse;
 import com.ecommerse.model.SignUpDto;
 import com.ecommerse.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

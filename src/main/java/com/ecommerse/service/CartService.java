@@ -6,6 +6,7 @@ import com.ecommerse.entity.CartEntity;
 import com.ecommerse.entity.ProductEntity;
 import com.ecommerse.entity.UserEntity;
 import com.ecommerse.exceptions.AuthenticationFailedException;
+import com.ecommerse.exceptions.CustomException;
 import com.ecommerse.exceptions.ProductNotFoundException;
 import com.ecommerse.model.AddToCartDto;
 import com.ecommerse.model.CartDto;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CartService {
@@ -100,4 +102,26 @@ public class CartService {
         );
     }
 
+    public ApiResponse delete(Long itemId, String token) {
+        try {
+            tokenService.authenticate(token);
+            UserEntity user = tokenService.getUser(token);
+            Optional<CartEntity> cartEntityOptional = cartRepository.findById(itemId);
+            if (cartEntityOptional.isEmpty()) {
+                return new ApiResponse("Error", "Cart ID is not valid [" + itemId + "]");
+            }
+            CartEntity cart = cartEntityOptional.get();
+            if (!cart.getUser().equals(user)) {
+                return new ApiResponse("Error", "Cart Item does not belong to user with id [" + user.getId() + "]");
+            }
+            cartRepository.delete(cart);
+            return new ApiResponse("Success", "Cart item deleted successfully.");
+        } catch (AuthenticationFailedException e) {
+            LOGGER.warn("Authentication failed for token '{}': {}", token, e.getMessage());
+            return new ApiResponse("Error", "Authentication failed. Invalid or expired token.");
+        } catch (Exception e) {
+            LOGGER.error("Error occurred while deleting cart item: {}", e.getMessage(), e);
+            return new ApiResponse("Error", "Failed to delete cart item. Please try again later.");
+        }
+    }
 }

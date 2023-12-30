@@ -26,4 +26,8 @@ public class CartController {
     public ResponseEntity<CartDto> getCartItems(@RequestParam String token){
         return new ResponseEntity<>(cartService.listCart(token),HttpStatus.OK);
     }
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable Long cartItemId,@RequestParam String token){
+        return new ResponseEntity<>(cartService.delete(cartItemId,token),HttpStatus.OK);
+    }
 }
